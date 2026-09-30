@@ -1,0 +1,108 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User account for admin or field worker",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "username": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "mobile": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "worker"] },
+        "active": { "type": "boolean" },
+        "pin": { "type": "string" },
+        "passwordHash": { "type": "string" },
+        "loginMethod": { "type": "string", "enum": ["both", "password", "google"] },
+        "allocatedAreaIds": { "type": "array" },
+        "failedAttempts": { "type": "number" },
+        "lockedUntil": { "type": "string" },
+        "lastLoginAt": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "username", "role", "active"]
+    },
+    "Area": {
+      "title": "Area",
+      "description": "Territory area with visit schedules and tracking",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "visitIntervalDays": { "type": "number" },
+        "active": { "type": "boolean" },
+        "currentStatus": { "type": "string" },
+        "currentWorkerId": { "type": "string" },
+        "currentWorkerName": { "type": "string" },
+        "startedAt": { "type": "string" },
+        "completedAt": { "type": "string" },
+        "completedByWorkerId": { "type": "string" },
+        "completedByWorkerName": { "type": "string" },
+        "nextVisitDate": { "type": "string" },
+        "isEarlyVisit": { "type": "boolean" },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "visitIntervalDays", "active"]
+    },
+    "Visit": {
+      "title": "Visit",
+      "description": "Completed visit record for an area",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "areaId": { "type": "string" },
+        "areaName": { "type": "string" },
+        "workerId": { "type": "string" },
+        "workerName": { "type": "string" },
+        "startTime": { "type": "string" },
+        "completionTime": { "type": "string" },
+        "plannedVisitDate": { "type": "string" },
+        "actualCompletionDate": { "type": "string" },
+        "visitType": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "areaId", "workerId", "completionTime", "actualCompletionDate"]
+    },
+    "ActivityLog": {
+      "title": "ActivityLog",
+      "description": "Audit log of area coverage actions",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "userRole": { "type": "string" },
+        "areaId": { "type": "string" },
+        "areaName": { "type": "string" },
+        "action": { "type": "string" },
+        "oldStatus": { "type": "string" },
+        "newStatus": { "type": "string" },
+        "details": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "action", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles and credentials"
+    },
+    "/areas/{areaId}": {
+      "schema": "Area",
+      "description": "Territory areas and their current visit tracking status"
+    },
+    "/visits/{visitId}": {
+      "schema": "Visit",
+      "description": "Historical log of completed area visits"
+    },
+    "/activity_logs/{logId}": {
+      "schema": "ActivityLog",
+      "description": "Real-time audit log of actions and status transitions"
+    }
+  }
+}

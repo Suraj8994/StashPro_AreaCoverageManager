@@ -1,0 +1,7 @@
+{
+  "name": "Area Coverage Manager",
+  "description": "Real-time field visit and area coverage management for distributors and field workers.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
