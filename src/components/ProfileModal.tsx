@@ -97,8 +97,8 @@ export const ProfileModal: React.FC = () => {
     if (!res.success) {
       setAdminError(res.message || 'Failed to update admin profile.');
     } else {
-      setAdminSuccess('Admin profile (Email & Mobile) updated successfully!');
-      setTimeout(() => setAdminSuccess(null), 3500);
+      setAdminSuccess('Admin profile updated successfully!');
+      setTimeout(() => setAdminSuccess(null), 4000);
     }
   };
 
@@ -107,58 +107,59 @@ export const ProfileModal: React.FC = () => {
     .map((a) => a.name);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/40 backdrop-blur-xs overflow-y-auto">
-      <div className="w-full max-w-lg bg-white border border-slate-200 rounded-3xl p-5 sm:p-6 shadow-xl relative my-auto max-h-[92vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/50 backdrop-blur-xs overflow-y-auto">
+      <div className="w-full max-w-md bg-white border border-slate-200 rounded-3xl p-5 sm:p-6 shadow-2xl relative my-6 text-slate-800">
         <button
           type="button"
           onClick={() => setIsProfileOpen(false)}
-          className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
+          className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 p-1 cursor-pointer"
+          aria-label="Close"
         >
-          <X className="w-5 h-5" />
+          <X className="w-6 h-6" />
         </button>
 
-        {/* Profile Header */}
-        <div className="flex items-center gap-3 pb-3.5 border-b border-slate-100">
+        {/* User Card Header */}
+        <div className="flex items-center gap-3.5 pb-4 border-b border-slate-100 pr-8">
           <div
-            className={`w-11 h-11 rounded-2xl flex items-center justify-center font-bold text-base shrink-0 ${
+            className={`w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-lg shrink-0 ${
               currentUser.role === 'admin'
-                ? 'bg-emerald-100 text-emerald-900 border border-emerald-300'
-                : 'bg-slate-100 text-slate-800 border border-slate-200'
+                ? 'bg-emerald-100 text-[#064e3b] border border-emerald-300'
+                : 'bg-emerald-50 text-emerald-800 border border-emerald-200'
             }`}
           >
             {currentUser.name.charAt(0).toUpperCase()}
           </div>
           <div className="min-w-0">
-            <h3 className="text-base font-bold text-slate-900 flex items-center gap-2 truncate">
+            <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2 truncate">
               <span>{currentUser.name}</span>
               <span
-                className={`text-[9px] font-bold uppercase px-2 py-0.5 rounded-full ${
+                className={`text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full ${
                   currentUser.role === 'admin'
                     ? 'bg-emerald-100 text-emerald-900 border border-emerald-300'
-                    : 'bg-slate-100 text-slate-800 border border-slate-200'
+                    : 'bg-emerald-50 text-emerald-800 border border-emerald-200'
                 }`}
               >
-                {currentUser.role}
+                {currentUser.role === 'admin' ? 'Admin' : 'Sales Representative'}
               </span>
             </h3>
-            <p className="text-[11px] text-slate-500">@{currentUser.username}</p>
+            <p className="text-xs text-slate-500 font-medium">@{currentUser.username}</p>
           </div>
         </div>
 
         {/* Read-only Quick Summary */}
-        <div className="py-3 space-y-1.5 border-b border-slate-100 text-xs text-slate-700">
+        <div className="py-3.5 space-y-2 border-b border-slate-100 text-sm text-slate-700 font-medium">
           <div className="flex items-center justify-between">
-            <span className="text-slate-500 flex items-center gap-1.5">
-              <Phone className="w-3.5 h-3.5 text-emerald-600" />
-              <span>Current Mobile:</span>
+            <span className="text-slate-500 flex items-center gap-2">
+              <Phone className="w-4 h-4 text-emerald-600" />
+              <span>Mobile:</span>
             </span>
             <strong className="text-emerald-700 font-bold">{currentUser.mobile || 'Not set'}</strong>
           </div>
 
           <div className="flex items-center justify-between">
-            <span className="text-slate-500 flex items-center gap-1.5">
-              <Mail className="w-3.5 h-3.5 text-slate-400" />
-              <span>Current Email:</span>
+            <span className="text-slate-500 flex items-center gap-2">
+              <Mail className="w-4 h-4 text-slate-400" />
+              <span>Email:</span>
             </span>
             <strong className="text-slate-900 font-semibold truncate max-w-[200px]">
               {currentUser.email || 'Not specified'}
@@ -166,33 +167,27 @@ export const ProfileModal: React.FC = () => {
           </div>
 
           <div className="flex items-center justify-between">
-            <span className="text-slate-500 flex items-center gap-1.5">
-              <Lock className="w-3.5 h-3.5 text-slate-400" />
-              <span>Login Method:</span>
+            <span className="text-slate-500 flex items-center gap-2">
+              <Lock className="w-4 h-4 text-slate-400" />
+              <span>Auth:</span>
             </span>
-            <strong className="text-slate-800 capitalize">
-              {currentUser.loginMethod === 'both'
-                ? 'Password & Google'
-                : currentUser.loginMethod === 'google'
-                ? 'Google Only'
-                : 'Password Only'}
-            </strong>
+            <strong className="text-slate-800">Password Authentication</strong>
           </div>
 
           {currentUser.role === 'worker' && (
             <div className="pt-2">
-              <span className="text-slate-500 flex items-center gap-1.5 mb-1 font-medium">
-                <Building className="w-3.5 h-3.5 text-slate-400" />
+              <span className="text-slate-600 flex items-center gap-2 mb-1.5 font-bold text-xs uppercase">
+                <Building className="w-4 h-4 text-slate-400" />
                 <span>Allocated Areas ({allocatedAreaNames.length}):</span>
               </span>
-              <div className="flex flex-wrap gap-1">
+              <div className="flex flex-wrap gap-1.5">
                 {allocatedAreaNames.length === 0 ? (
-                  <span className="text-slate-400 italic">All areas or no restriction</span>
+                  <span className="text-slate-400 text-xs italic">All areas or no restriction</span>
                 ) : (
                   allocatedAreaNames.map((name, i) => (
                     <span
                       key={i}
-                      className="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-bold"
+                      className="px-2.5 py-0.5 rounded-lg bg-emerald-50 text-emerald-900 border border-emerald-200 text-xs font-bold"
                     >
                       {name}
                     </span>
@@ -205,76 +200,73 @@ export const ProfileModal: React.FC = () => {
 
         {/* Admin Profile Modification Section (Email & Mobile) */}
         {currentUser.role === 'admin' && (
-          <div className="py-3.5 border-b border-slate-100">
-            <div className="flex items-center justify-between mb-2">
-              <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
+          <div className="py-4 border-b border-slate-100">
+            <div className="flex items-center justify-between mb-3">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                <span>Admin Profile Rights (Edit Mobile & Email)</span>
+                <span>Admin Mobile & Email Rights</span>
               </h4>
-              <span className="text-[10px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.2 rounded font-bold">
-                Admin Modification Rights
-              </span>
             </div>
 
             {adminSuccess && (
-              <div className="mb-2.5 p-2 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-xs flex items-center gap-2">
-                <CheckCircle className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+              <div className="mb-3 p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-900 text-xs sm:text-sm flex items-center gap-2 font-medium">
+                <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
                 <span>{adminSuccess}</span>
               </div>
             )}
 
             {adminError && (
-              <div className="mb-2.5 p-2 bg-rose-50 border border-rose-200 rounded-xl text-rose-700 text-xs flex items-center gap-2">
-                <AlertCircle className="w-3.5 h-3.5 text-rose-600 shrink-0" />
+              <div className="mb-3 p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-700 text-xs sm:text-sm flex items-center gap-2 font-medium">
+                <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
                 <span>{adminError}</span>
               </div>
             )}
 
-            <form onSubmit={handleSaveAdminProfile} className="space-y-2.5">
+            <form onSubmit={handleSaveAdminProfile} className="space-y-3">
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
                   Admin Full Name
                 </label>
                 <div className="relative">
-                  <UserIcon className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <UserIcon className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                   <input
                     type="text"
                     value={adminName}
                     onChange={(e) => setAdminName(e.target.value)}
                     placeholder="Anil Sakpal"
-                    className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl pl-8 pr-3 py-2 text-slate-800 text-xs placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white"
+                    className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl pl-10 pr-3 py-3 text-slate-900 text-base placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
-                  Admin Mobile Number (+91)
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+                  Admin Mobile (+91)
                 </label>
                 <div className="relative">
-                  <Phone className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <Phone className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                   <input
                     type="text"
                     value={adminMobile}
                     onChange={(e) => setAdminMobile(e.target.value)}
                     placeholder="+91 8108941215 or 8108941215"
-                    className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl pl-8 pr-3 py-2 text-slate-800 text-xs placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white font-semibold text-emerald-800"
+                    className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl pl-10 pr-3 py-3 text-slate-900 text-base placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white font-bold text-emerald-800"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
-                  Admin Email Address
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+                  Admin Email
                 </label>
                 <div className="relative">
-                  <Mail className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                   <input
                     type="email"
                     value={adminEmail}
                     onChange={(e) => setAdminEmail(e.target.value)}
                     placeholder="anilsakpal@stashpro.com"
-                    className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl pl-8 pr-3 py-2 text-slate-800 text-xs placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white"
+                    className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl pl-10 pr-3 py-3 text-slate-900 text-base placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white"
                   />
                 </div>
               </div>
@@ -282,103 +274,98 @@ export const ProfileModal: React.FC = () => {
               <button
                 type="submit"
                 disabled={adminProfileLoading}
-                className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white rounded-xl text-xs font-bold transition-all disabled:opacity-50 cursor-pointer shadow-xs flex items-center justify-center gap-1.5"
+                className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white rounded-xl text-sm font-bold transition-all disabled:opacity-50 cursor-pointer shadow-xs flex items-center justify-center gap-2 min-h-[44px]"
               >
-                <span>{adminProfileLoading ? 'Saving Changes...' : 'Save Admin Email & Mobile'}</span>
+                <span>{adminProfileLoading ? 'Saving Changes...' : 'Save Admin Details'}</span>
               </button>
             </form>
           </div>
         )}
 
         {/* Change Password */}
-        <div className="pt-3.5">
-          <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-2.5 flex items-center gap-1.5">
-            <KeyRound className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Change Password</span>
+        <div className="pt-4">
+          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-3 flex items-center gap-2">
+            <KeyRound className="w-4 h-4 text-emerald-600" />
+            <span>Change Account Password</span>
           </h4>
 
-          {currentUser.loginMethod === 'google' ? (
-            <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-500">
-              Your account is authenticated via Google. Password is managed directly by Google and cannot be changed here.
+          <form onSubmit={handlePasswordChange} className="space-y-3">
+            {passwordSuccess && (
+              <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-900 text-xs sm:text-sm flex items-center gap-2 font-medium">
+                <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>{passwordSuccess}</span>
+              </div>
+            )}
+
+            {passwordError && (
+              <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-700 text-xs sm:text-sm flex items-center gap-2 font-medium">
+                <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+                <span>{passwordError}</span>
+              </div>
+            )}
+
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+                Current Password
+              </label>
+              <input
+                type="password"
+                required
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                placeholder="Enter current password"
+                className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl px-4 py-3 text-slate-900 text-base placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white"
+              />
             </div>
-          ) : (
-            <form onSubmit={handlePasswordChange} className="space-y-2.5">
-              {passwordSuccess && (
-                <div className="p-2.5 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-xs flex items-center gap-2 font-medium">
-                  <CheckCircle className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                  <span>{passwordSuccess}</span>
-                </div>
-              )}
 
-              {passwordError && (
-                <div className="p-2.5 bg-rose-50 border border-rose-200 rounded-xl text-rose-700 text-xs flex items-center gap-2 font-medium">
-                  <AlertCircle className="w-3.5 h-3.5 text-rose-600 shrink-0" />
-                  <span>{passwordError}</span>
-                </div>
-              )}
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+                New Password
+              </label>
+              <input
+                type="password"
+                required
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder="Min 4 characters"
+                className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl px-4 py-3 text-slate-900 text-base placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white"
+              />
+            </div>
 
-              <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
-                  Current Password
-                </label>
-                <input
-                  type="password"
-                  required
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                  placeholder="Enter current password"
-                  className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl px-3 py-2 text-slate-800 text-xs placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white"
-                />
-              </div>
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">
+                Confirm New Password
+              </label>
+              <input
+                type="password"
+                required
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Re-enter new password"
+                className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl px-4 py-3 text-slate-900 text-base placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white"
+              />
+            </div>
 
-              <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
-                  New Password
-                </label>
-                <input
-                  type="password"
-                  required
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  placeholder="Min 4 characters"
-                  className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl px-3 py-2 text-slate-800 text-xs placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[10px] font-bold uppercase tracking-wider text-slate-500 mb-1">
-                  Confirm New Password
-                </label>
-                <input
-                  type="password"
-                  required
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="Re-enter new password"
-                  className="w-full bg-[#f8fafc] border border-slate-200 rounded-xl px-3 py-2 text-slate-800 text-xs placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white"
-                />
-              </div>
-
-              <div className="pt-2 flex justify-end gap-2">
-                <button
-                  type="button"
-                  onClick={() => setIsProfileOpen(false)}
-                  className="px-3.5 py-2 text-xs font-bold text-slate-500 hover:text-slate-800 cursor-pointer"
-                >
-                  Close
-                </button>
-                <button
-                  type="submit"
-                  disabled={passwordLoading}
-                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white rounded-xl text-xs font-bold shadow-xs transition-all disabled:opacity-50 cursor-pointer"
-                >
-                  {passwordLoading ? 'Updating...' : 'Update Password'}
-                </button>
-              </div>
-            </form>
-          )}
+            <div className="pt-2 flex justify-end gap-2.5">
+              <button
+                type="button"
+                onClick={() => setIsProfileOpen(false)}
+                className="px-4 py-2.5 text-sm font-bold text-slate-600 hover:text-slate-900 cursor-pointer min-h-[44px]"
+              >
+                Close
+              </button>
+              <button
+                type="submit"
+                disabled={passwordLoading}
+                className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white rounded-xl text-sm font-bold shadow-xs transition-all disabled:opacity-50 cursor-pointer min-h-[44px]"
+              >
+                {passwordLoading ? 'Updating...' : 'Update Password'}
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
   );
 };
+export default ProfileModal;
